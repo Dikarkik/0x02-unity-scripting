@@ -2,15 +2,16 @@
 
 public class PlayerController : MonoBehaviour
 {
+    private int score = 0;
+
+    // movement and rotation
     public float speed;
     Rigidbody rb;
     Vector3 forceDirection;
     Vector3 rotationDirection;
 
-	// Start is called before the first frame update
-	void Start() => rb = GetComponent<Rigidbody>();
+    void Start() => rb = GetComponent<Rigidbody>();
 
-	// Update is called once per frame
 	void FixedUpdate()
     {
             // movement
@@ -22,5 +23,15 @@ public class PlayerController : MonoBehaviour
             rotationDirection.x = Input.GetAxis("Vertical");
             rotationDirection.z = -Input.GetAxis("Horizontal");
             transform.Rotate(rotationDirection * (speed * 3) * Time.deltaTime);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Pickup"))
+        {
+            score++;
+            Destroy(other.gameObject);
+            Debug.Log($"Score: {score}");
+        }
     }
 }
