@@ -3,6 +3,7 @@
 public class PlayerController : MonoBehaviour
 {
     private int score = 0;
+    public int health = 5;
 
     // movement and rotation
     public float speed;
@@ -32,6 +33,11 @@ public class PlayerController : MonoBehaviour
             score++;
             Destroy(other.gameObject);
             Debug.Log($"Score: {score}");
+        }
+        else if(other.CompareTag("Trap"))
+        {
+            health--;
+            Debug.Log($"Health: {health}");
         }
     }
 }
