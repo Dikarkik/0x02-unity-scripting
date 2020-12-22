@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -26,18 +27,31 @@ public class PlayerController : MonoBehaviour
             transform.Rotate(rotationDirection * (speed * 3) * Time.deltaTime);
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if(other.CompareTag("Pickup"))
+	void Update()
+	{
+        if(health == 0)
         {
-            score++;
-            Destroy(other.gameObject);
-            Debug.Log($"Score: {score}");
+            Debug.Log("Game Over!");
+            SceneManager.LoadScene(0, LoadSceneMode.Single);
         }
-        else if(other.CompareTag("Trap"))
+    }
+
+	void OnTriggerEnter(Collider other)
+    {
+        switch(other.tag)
         {
-            health--;
-            Debug.Log($"Health: {health}");
+            case "Pickup":
+                score++;
+                Destroy(other.gameObject);
+                Debug.Log($"Score: {score}");
+                break;
+            case "Trap":
+                health--;
+                Debug.Log($"Health: {health}");
+                break;
+            case "Goal":
+                Debug.Log("You win!");
+                break;
         }
     }
 }
